@@ -1,0 +1,58 @@
+
+
+(3)add the following line to <KSRC>/drivers/char/Kconfig
+### we are modifying the parent directory's Kconfig script
+### file
+##the following must be added to the parent directory's
+### Kconfig file 
+####do not delete/remove/overwrite the existing parent 
+####directory's Kconfig 
+#### all these set-up and rules are part of the
+#### kbuild set-up 
+
+###remove the #s to uncomment 
+##source "drivers/char/custom/Kconfig"
+
+
+
+###add the following lines to <KSRC>/drivers/char/custom/Kconfig
+
+#####this block of code may be used, for a static/dynamic module, 
+#######as per configuration settings
+####### in this context, a single kernel configuration 
+###### parameter will be created, CONFIG_CUSTOM_MODULE
+##### this parameter can take up 3 different settings 
+###### ->if set to y, the corresponding kernel module 
+#####    will be built, as a internal, static kernel module by 
+#####    the kbuild system 
+#####  ->if set to m, the corresponding kernel module
+####     will  be built, as a internal, dynamic kernel module 
+#####  ->if set to n, this kernel module will be completely 
+#######  disabled
+####     and excluded from the kernel   
+
+config CUSTOM_MODULE
+       tristate "test custom module"
+       default m
+       help 
+         you can use this to test in-tree module
+
+
+.........................
+(or) 
+###this block may be used, in a Kconfig, 
+####for supporting a static module 
+#### we may use the following kernel configuration parameter, 
+#### if we do not wish to support dynamic kernel module, 
+#### for a specific kernel module
+#### in the following kernel configuration parameter, 
+#### we can support enabling the kernel module, as a 
+#### static kernel module or disabling the kernel module  
+config CUSTOM_MODULE
+       bool "test custom module"
+       default n
+       help
+       you can use this to test in-tree module
+
+
+ 

@@ -1,0 +1,31 @@
+
+
+(3)add the following line to <KSRC>/drivers/char/Kconfig
+
+
+source "drivers/char/custom/Kconfig"
+
+
+
+add the following lines to <KSRC>/drivers/char/custom/Kconfig
+
+#####this block of code may be used, for a static/dynamic module, 
+#######as per configuration settings 
+config CUSTOM_MODULE
+       tristate "test custom module"
+       default m
+       help 
+       you can use this to test in-tree module
+
+
+.........................
+(or) 
+###this block may be used, in a Kconfig, for supporting a static module 
+config CUSTOM
+       bool "test custom module"
+       default n
+       help
+       you can use this to test in-tree module
+
+
+ 

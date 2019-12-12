@@ -1,0 +1,35 @@
+
+(4)add the following line to  <KSRC>/drivers/char/Makefile 
+
+     
+obj-$(CONFIG_CUSTOM_MODULE) += custom/
+
+
+add the following line to <KSRC>/drivers/char/custom/Makefile
+
+###this will be added to our project's Makefile script, 
+###if there is a single source file only 
+obj-$(CONFIG_CUSTOM_MODULE) += custom.o 
+
+
+................................................
+(or)
+###this set-up is for a project, which uses multiple source files
+####for a single module object file 
+
+obj-$(CONFIG_CUSTOM_MODULE) += custom.o
+
+custom-objs := custom-mod1.o custom-mod2.o 
+
+
+
+//custom-objs := hello.o hello1.o hello_n3.o
+
+
+
+
+
+
+
+
+

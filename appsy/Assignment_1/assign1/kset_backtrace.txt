@@ -1,0 +1,10 @@
+kset_test-23490 [006] .... 24773.715283: seq_open <-kernfs_fop_open
+       kset_test-23490 [006] .... 24773.715443: seq_read <-kernfs_fop_read
+       kset_test-23490 [006] .... 24773.715452: foo_attr_show <-sysfs_kf_seq_show
+       kset_test-23490 [006] .... 24773.715453: foo_show <-foo_attr_show
+       kset_test-23490 [006] .... 24773.715655: foo_attr_store <-sysfs_kf_write
+       kset_test-23490 [006] .... 24773.715671: foo_store <-foo_attr_store
+       kset_test-23490 [006] .... 24773.716022: seq_read <-kernfs_fop_read
+       kset_test-23490 [006] .... 24773.716038: foo_attr_show <-sysfs_kf_seq_show
+       kset_test-23490 [006] .... 24773.716039: foo_show <-foo_attr_show
+

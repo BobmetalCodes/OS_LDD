@@ -1,0 +1,78 @@
+--------------------------------------------------------------------------------------
+                            Tracing (Backtracing)
+--------------------------------------------------------------------------------------
+- Flow of Commands :
+
+  => setup the dynamic module (proc_seq_example1.c and Makefile)
+        -> Prepare proc_seq_example1.c
+        -> Root session
+            $ sudo -i
+        -> make the .o and .ko files
+            $ make -C /usr/src/linux-source-4.18.0/  M=`pwd` modules
+        -> Launch  
+            $ insmod proc_seq_example1.ko
+        -> View
+            $ lsmod | less
+            $ dmesg | less
+        -> To remove (after completion)
+            $ rmmod proc_seq_example1.ko
+
+  => setup the user-space code (proc_seq_test.c)
+        -> Compile the code and remove warnings/errors
+            $ gcc proc_seq_test.c -o proc_test
+
+  => Tracing (be in sudo session -->  $ sudo -i)
+        -> Turning Off Tracing :
+            $ echo 0  > /sys/kernel/debug/tracing/tracing_on 
+        -> Clear the Buffer :
+            $ cat /sys/kernel/debug/tracing/trace_pipe
+        -> Set the current_tracer to 'function' from 'nop'
+            $ echo function > /sys/kernel/debug/tracing/current_tracer
+        -> Add following to the 'set_ftrace_filter'
+            $ echo proc_reg_*                >> /sys/kernel/debug/tracing/set_ftrace_filter
+            $ echo '*:mod:proc_seq_example1' >> /sys/kernel/debug/tracing/set_ftrace_filter 
+            $ echo seq_open                  >> /sys/kernel/debug/tracing/set_ftrace_filter
+            $ echo seq_read                  >> /sys/kernel/debug/tracing/set_ftrace_filter
+        -> Check 'set_ftrace_filter'
+            $ cat /sys/kernel/debug/tracing/set_ftrace_filter
+
+           --> o/p will be something like this (depends on all the callbacks you've used in the module) :
+                seq_open
+                seq_read
+                proc_reg_get_unmapped_area
+                proc_reg_mmap
+                proc_reg_compat_ioctl
+                proc_reg_unlocked_ioctl
+                proc_reg_poll
+                proc_reg_write
+                proc_reg_read
+                proc_reg_llseek
+                proc_reg_release
+                proc_reg_open
+                mydrv_seq_stop [proc_seq_example1]
+                mydrv_seq_next [proc_seq_example1]
+                mydrv_seq_start [proc_seq_example1]
+                mydrv_seq_open [proc_seq_example1]
+                mydrv_seq_show [proc_seq_example1]
+                mydrv_exit [proc_seq_example1]
+
+        -> Turning On Tracing :
+            $ echo 1  > /sys/kernel/debug/tracing/tracing_on
+        -> As soon as you turn on, all the system tracing will also be available in the background.
+        -> Now there is two methods to see the tracing.
+           --> 1. real time using "trace_pipe"
+           --> 2. in a file using "trace"
+        -> Run the user space code 
+            $ ./proc_test
+        -> To see the trace
+            $ cat /sys/kernel/debug/tracing/trace
+        -> To see the real time trace (use ctrl+c to stop)
+            $ cat /sys/kernel/debug/tracing/trace_pipe
+
+
+--> In "set_ftrace_filter"
+
+    $ echo <_name_> >> /sys/kernel/debug/tracing/set_ftrace_filter
+
+
+

@@ -1,0 +1,31 @@
+### Add the following line to <KSRC>/drivers/char/Kconfig
+### The following must be added to the parent directory's Kconfig file 
+
+### source "drivers/char/custom/Kconfig"
+
+#.................................................
+
+### Add the following lines to <KSRC>/drivers/char/custom/Kconfig
+### This block of code may be used, for a static/dynamic module, as per configuration settings
+ 
+config CUSTOM_MODULE
+       tristate "test custom module"
+       default m
+       help 
+           you can use this to test in-tree module 
+
+### In this case, a new kernel configuration parameter is generated - CONFIG_CUSTOM_MODULE2
+
+### config CUSTOM_MODULE2
+###       tristate "test custom module2"
+###       default m
+###       help 
+###          you can use this to test in-tree module
+
+#....................(or).........................
+
+### config CUSTOM_MODULE
+###     bool "test custom module"
+###     default n
+###     help
+###         you can use this to test in-tree module
